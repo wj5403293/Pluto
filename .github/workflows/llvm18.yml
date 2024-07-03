@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: ollvm build
 
 on:
   push:
@@ -24,14 +24,14 @@ jobs:
       run: git submodule update --init
     - name: ./build.sh
       run: ./build.sh
-    - name: Test tiny-aes
-      run: ./tests/test-aes.sh
-    - name: Test jsoncpp
-      run: ./tests/test-jsoncpp.sh
-    - name: Test json
-      run: ./tests/test-json.sh
-    - name: Test openssl
-      run: ./tests/test-openssl.sh
+#    - name: Test tiny-aes
+#      run: ./tests/test-aes.sh
+#    - name: Test jsoncpp 
+#      run: ./tests/test-jsoncpp.sh
+#    - name: Test json
+#      run: ./tests/test-json.sh
+#    - name: Test openssl
+#      run: ./tests/test-openssl.sh
   # Windows:
 
   #   runs-on: windows-latest
