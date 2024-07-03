@@ -27,7 +27,7 @@ jobs:
     - name: tar.gz
       run: tar -czvf LLVM14.0.6.tar.gz /install/
     - name: Upload Artifact
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: LLVM14.0.6.tar.gz
-          path: LLVM14.0.6.tar.gz
+      uses: actions/upload-artifact@v4.3.3
+      with:
+       name: LLVM14.0.6.tar.gz
+       path: LLVM14.0.6.tar.gz
