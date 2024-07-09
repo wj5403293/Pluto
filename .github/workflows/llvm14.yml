@@ -23,7 +23,7 @@ jobs:
     - name: git submodule update --init
       run: git submodule update --init
     - name: ./build.sh
-      run: ./build.sh
+      run: ./build.sh -j8
     - name: tar.gz
       run: tar -czvf LLVM14.0.6.tar.gz install/bin/clang-14 install/bin/lld install/lib/clang
     - name: Upload Artifact
