@@ -20,9 +20,11 @@ jobs:
       run: sudo apt install ninja-build -y
     - name: Install z3
       run: sudo apt install libz3-dev -y
-    - name: git submodule update --init
+    - name: Install Clang
+      run: sudo apt install clang -y
+    - name: git submodule update
       run: git submodule update --init
-    - name: ./build.sh
+    - name: build.sh
       run: ./build.sh -j8
     - name: tar.gz
       run: tar -czvf LLVM14.0.6.tar.gz install/bin/clang-14 install/bin/lld install/lib/clang
