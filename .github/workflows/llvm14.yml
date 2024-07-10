@@ -23,7 +23,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set up Clang 14
-      uses: llvm/llvm-project@v0.0.2
+      uses: llvm/llvm-project@v14.0.6
       with:
         clang-version: 14
     - name: git submodule update
