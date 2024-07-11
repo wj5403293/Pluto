@@ -1,1 +1,32 @@
 
+name: ollvm build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # 添加这一行允许手动触发
+
+jobs:
+  Ubuntu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: 安装工具链
+      run: sudo apt install -y clang-14 libz3-dev cmake ninja-build
+    - name: git submodule update
+      run: git submodule update --init
+    - name: 执行build.sh
+      run: ./build.sh -j8
+    - name: 压缩文件
+      run: tar -czvf LLVM14.0.6.tar.gz install/bin/clang-14 install/bin/lld install/lib/clang
+    - name: 上传文件
+      uses: actions/upload-artifact@v4.3.3
+      with:
+       name: LLVM14.0.6.tar.gz
+       path: LLVM14.0.6.tar.gz
