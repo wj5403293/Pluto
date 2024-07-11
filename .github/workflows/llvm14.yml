@@ -16,14 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install ninja-build
-      run: sudo apt install ninja-build -y
-    - name: Install z3
-      run: sudo apt install libz3-dev -y
-    - name: Install Cmake
-      run: sudo apt install cmake -y
-    - name: Install Clang
-      run: sudo apt-get install -y clang-14
+    - name: Install 工具链
+      run: sudo apt install -y clang-14 libz3-dev cmake ninja-build
     - name: Add LLVM to PATH
       run: echo "/usr/lib/llvm-14/bin" >> $GITHUB_PATH
     - name: git submodule update
