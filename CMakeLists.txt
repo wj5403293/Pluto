@@ -13,7 +13,12 @@ set(LLVM_INCLUDE_TESTS OFF CACHE BOOL "")
 set(CLANG_VENDOR "Xingkong" CACHE STRING "")
 # 设置 LLD_VENDOR 版本名
 set(LLD_VENDOR "Xingkong" CACHE STRING "")
-set(CMAKE_SYSTEM_NAME Android)
+set(CMAKE_BUILD_TYPE release)      # 打包成正式版
+set(CMAKE_SYSTEM_NAME ANDROID) # 设置目标编译平台参数 Android
+set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_SYSTEM_VERSION 21)     # 系统版本
+set(ANDROID_PLATFORM 21)          # 平台版本
+set(ANDROID_ABI arm64-v8a)          # 设置目标构架 armeabi-v7a arm64-v8a x86 x86_64
 
 # 对整个项目取消特定警告
 add_compile_options(-Wno-unused-but-set-variable)
