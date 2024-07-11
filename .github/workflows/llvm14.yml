@@ -25,7 +25,7 @@ jobs:
     - name: Install Clang
       run: sudo apt-get install -y clang-14
     - name: Add LLVM to PATH
-      run: echo "/usr/lib/llvm-18/bin" >> $GITHUB_PATH
+      run: echo "/usr/lib/llvm-14/bin" >> $GITHUB_PATH
     - name: git submodule update
       run: git submodule update --init
     - name: build.sh
