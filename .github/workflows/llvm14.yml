@@ -23,7 +23,7 @@ jobs:
     - name: 执行build.sh
       run: ./build.sh -j8
     - name: 压缩文件
-      run: tar -czvf LLVM14.0.6.tar.gz install/bin/clang-14 install/bin/lld install/lib/clang
+      run: tar -czvf LLVM14.0.6.tar.gz install
     - name: 上传文件
       uses: actions/upload-artifact@v4.3.3
       with:
