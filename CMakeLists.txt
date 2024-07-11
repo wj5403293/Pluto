@@ -13,6 +13,7 @@ set(LLVM_INCLUDE_TESTS OFF CACHE BOOL "")
 set(CLANG_VENDOR "Xingkong" CACHE STRING "")
 # 设置 LLD_VENDOR 版本名
 set(LLD_VENDOR "Xingkong" CACHE STRING "")
+set(CMAKE_SYSTEM_NAME Android)
 
 # 对整个项目取消特定警告
 add_compile_options(-Wno-unused-but-set-variable)
