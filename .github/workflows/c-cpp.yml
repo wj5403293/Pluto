@@ -1,47 +1,53 @@
-name: C/C++ CI
+name: Build LLVM Project for Android
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+   workflow_dispatch
 
 jobs:
-  Ubuntu:
-
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Install ninja-build
-      run: sudo apt install ninja-build -y
-    - name: Install z3
-      run: sudo apt install libz3-dev -y
-    - name: git submodule update --init
-      run: git submodule update --init
-    - name: ./build.sh
-      run: ./build.sh
-    - name: Test tiny-aes
-      run: ./tests/test-aes.sh
-    - name: Test jsoncpp
-      run: ./tests/test-jsoncpp.sh
-    - name: Test json
-      run: ./tests/test-json.sh
-    - name: Test openssl
-      run: ./tests/test-openssl.sh
-  # Windows:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   runs-on: windows-latest
+    - name: Install required tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential binutils wget unzip ninja-build
 
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: sudo apt install ninja-build -y
-  #     run: sudo apt install ninja-build -y
-  #   - name: git submodule update --init --recursive
-  #     run: git submodule update --init --recursive
-  #   - name: make build
-  #     run: make build
-  #   - name: make install
-  #     run: make install
-  #   - name: make check
-  #     run: make check
+    - name: Set up Android NDK
+      run: |
+        wget https://dl.google.com/android/repository/android-ndk-r27c-linux.zip
+        unzip android-ndk-r27c-linux.zip -d $HOME
+        echo "NDK_HOME=$HOME/android-ndk-r27c" >> $GITHUB_ENV
+
+    - name: Download LLVM Project source
+      run: |
+        wget https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz
+        tar -xJf llvm-project-18.1.8.src.tar.xz
+
+    - name: Build LLVM Project
+      run: |
+        export NDK_HOME=$HOME/android-ndk-r27c
+        export TOOLCHAIN=$NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64
+        export TARGET_ARCH=arm64-v8a
+        export SYSROOT=$TOOLCHAIN/sysroot
+        export CC=$TOOLCHAIN/bin/aarch64-linux-android25-clang
+        export CXX=$TOOLCHAIN/bin/aarch64-linux-android25-clang++
+
+        cd llvm-project-18.1.8.src/llvm
+        mkdir build && cd build
+        cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=$NDK_HOME/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-21 -DCMAKE_BUILD_TYPE=Release ..
+        ninja -j16
+
+    - name: Package output directory
+      run: |
+        cd llvm-project-18.1.8.src/build
+        tar -cJf llvm-output.tar.xz .
+
+    - name: Upload output archive
+      uses: actions/upload-artifact@v3
+      with:
+        name: llvm-output
+        path: llvm-project-18.1.8.src/build/llvm-output.tar.xz
